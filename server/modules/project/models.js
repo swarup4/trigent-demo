@@ -9,7 +9,7 @@ const projectCategory = {
     projectName: { type: String, required: true },
     category: { type: String, required: true },
     subCategory: { type: String, required: true },
-    projectType: { type: String, required: true },
+    techStack: { type: Schema.Types.Mixed, required: true },
     status: { type: Number, required: true },
     createdAt: Date,
     updatedAt: Date

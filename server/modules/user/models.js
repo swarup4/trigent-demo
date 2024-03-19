@@ -51,6 +51,7 @@ const userProfilePicsSchema = new Schema(userProfilePics, { versionKey: false, t
 const userProject = {
     _id: { type: objectId, auto: true },
     userId: { type: objectId, required: true },
+    companyId: { type: objectId, required: true },
     projects: Schema.Types.Mixed,
     createdAt: Date,
     updatedAt: Date
