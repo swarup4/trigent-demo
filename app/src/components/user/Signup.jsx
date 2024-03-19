@@ -1,52 +1,49 @@
 import React, { useReducer } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import { object, string, ref } from 'yup'
+import axios from 'axios'
+import { HOST_URL } from '../../constants'
 
+const initialValues = {
+    fname: '',
+    lname: '',
+    role: '',
+    username: '',
+    email: '',
+    password: ''
+};
+const schema = object({
+    fname: string().required('Enter your First name'),
+    lname: string().required('Enter your Last name'),
+    role: string().required('Select your role'),
+    username: string().required('Enter your username'),
+    email: string().email('Email should be valid').required('Enter your email'),
+    password: string().required('Enter your password')
+});
 
 export default function Signup() {
 
-    const initialState = {
-        fname: '',
-        lname: '',
-        username: '',
-        email: '',
-        password: ''
-    };
-
-    function reducer(state, action) {
-        switch (action.type) {
-            case 'fname':
-                return {
-                    ...state, fname: action.data
-                }
-            case 'lname':
-                return {
-                    ...state, lname: action.data
-                }
-            case 'username':
-                return {
-                    ...state, username: action.data
-                }
-            case 'email':
-                return {
-                    ...state, email: action.data
-                }
-            case 'password':
-                return {
-                    ...state, password: action.data
-                }
-            default:
-                break
+    const navigate = useNavigate();
+    const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
+        initialValues: initialValues,
+        validationSchema: schema,
+        onSubmit: (values, action) => {
+            console.log(values);
+            signup(values);
         }
-        throw Error('Unknown action: ' + action.type);
-    }
+    });
 
-    const [state, dispatch] = useReducer(reducer, initialState);
-
-    function addValue(ev, type) {
-        dispatch({
-            type: type,
-            data: ev.target.value
-        })
+    function signup(data) {
+        const url = `${HOST_URL}user/signup`
+        // axios.post(url, data).then(res => {
+        //     sessionStorage.auth = res.data.token;
+        //     const location = sessionStorage.url;
+        //     navigate(location);
+        // }).catch(err => {
+        //     console.log(err)
+        // })
+        console.log(data);
     }
 
     return (
@@ -64,17 +61,17 @@ export default function Signup() {
                 </div>
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                    <form className="space-y-6" action="#" method="POST">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="text" className="block text-sm font-medium leading-6 text-gray-900">
                                 Full Name
                             </label>
                             <div className="mt-2">
                                 <div className='grid grid-flow-row-dense grid-cols-2 gap-x-4'>
-                                    <input id="fname" name="fname" type="text" autoComplete="fname" placeholder="Enter First Name" value={state.fname} onChange={(ev) => addValue(ev, 'fname')} required
+                                    <input id="fname" name="fname" type="text" autoComplete="fname" placeholder="Enter First Name" value={values.fname} onChange={handleChange} onBlur={handleBlur}
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
-                                    <input id="lname" name="lname" type="text" autoComplete="lname" placeholder="Enter Last Name" onChange={(ev) => addValue(ev, 'lname')} required
+                                    <input id="lname" name="lname" type="text" autoComplete="lname" placeholder="Enter Last Name" value={values.lname} onChange={handleChange} onBlur={handleBlur}
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
                                 </div>
@@ -83,10 +80,25 @@ export default function Signup() {
 
                         <div>
                             <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                                Role
+                            </label>
+                            <div className="mt-2">
+                                <select id="country" name="country" autoComplete="country-name" 
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                    <option>Select Role</option>
+                                    <option>Admin</option>
+                                    <option>User</option>
+                                    <option>Client</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                                 Username
                             </label>
                             <div className="mt-2">
-                                <input id="username" name="username" type="text" autoComplete="username" placeholder="Enter Username" onChange={(ev) => addValue(ev, 'username')} required
+                                <input id="username" name="username" type="text" autoComplete="username" placeholder="Enter Username" value={values.username} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -97,7 +109,7 @@ export default function Signup() {
                                 Email address
                             </label>
                             <div className="mt-2">
-                                <input id="email" name="email" type="email" autoComplete="email" placeholder="Enter Email" onChange={(ev) => addValue(ev, 'email')} required
+                                <input id="email" name="email" type="email" autoComplete="email" placeholder="Enter Email" value={values.email} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
@@ -108,7 +120,7 @@ export default function Signup() {
                                 Password
                             </label>
                             <div className="mt-2">
-                                <input id="password" name="password" type="password" autoComplete="current-password" placeholder="Enter Email" onChange={(ev) => addValue(ev, 'password')} required
+                                <input id="password" name="password" type="password" autoComplete="current-password" placeholder="Enter Password" value={values.password} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
                             </div>
