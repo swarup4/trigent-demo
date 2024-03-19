@@ -39,6 +39,6 @@ let orderDetails = {
 const orderDetailsSchema = new Schema(orderDetails, { versionKey: false });
 
 module.exports = {
-    ProductComment: mongoose.model("order", orderSchema),
-    ProductFeedback: mongoose.model("orderDetails", orderDetailsSchema),
+    Order: mongoose.model("order", orderSchema),
+    OrderDetails: mongoose.model("orderDetails", orderDetailsSchema),
 }

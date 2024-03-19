@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const objectId = Schema.ObjectId;
 
 
+// User
 const user = {
     _id: { type: objectId, auto: true },
     fname: String,
@@ -18,7 +19,7 @@ const user = {
 const userSchema = new Schema(user, { versionKey: false, timestamps: true });
 
 
-// User Details
+// Company
 const company = {
     _id: { type: objectId, auto: true },
     userId: { type: objectId, required: true },
@@ -46,8 +47,20 @@ const userProfilePics = {
 const userProfilePicsSchema = new Schema(userProfilePics, { versionKey: false, timestamps: true });
 
 
+// User Project
+const userProject = {
+    _id: { type: objectId, auto: true },
+    userId: { type: objectId, required: true },
+    projects: Schema.Types.Mixed,
+    createdAt: Date,
+    updatedAt: Date
+};
+const userProjectSchema = new Schema(userProject, { versionKey: false, timestamps: true });
+
+
 module.exports = {
     Auth: mongoose.model("user", userSchema),
     Company: mongoose.model("company", companySchema),
-    ProfilePics: mongoose.model("userProfilePics", userProfilePicsSchema)
+    ProfilePics: mongoose.model("userProfilePics", userProfilePicsSchema),
+    UserProject: mongoose.model("userProjectSchema", userProjectSchema)
 };

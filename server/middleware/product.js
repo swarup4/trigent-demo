@@ -1,10 +1,9 @@
-const Product = require('../modules/project/models');
-const Review = require('../modules/review/models');
+const Project = require('../modules/project/models');
 
-const products = {
-    deleteProductDetails: (req, res, next) => {
-        const productId = req.params.id;
-        Product.Details.findByIdAndDelete(productId, (err, data) => {
+const projects = {
+    deleteProjectDetails: (req, res, next) => {
+        const projectId = req.params.id;
+        Project.Details.findByIdAndDelete(projectId, (err, data) => {
             if (err) {
                 res.send(err.message);
             } else {
@@ -13,7 +12,7 @@ const products = {
         })
     },
     
-    uploadProductImage: (req, res, next) => {
+    uploadProjectImage: (req, res, next) => {
         const client = s3Client;
         const params = uploadParams;
         
@@ -24,13 +23,13 @@ const products = {
         	if (err) {
         		res.status(500).json({error:"Error -> " + err});
         	}
-        	res.json('Product Image uploaded successfully');
+        	res.json('Project Image uploaded successfully');
         });
     },
 
-    deleteProductReview: (req, res, next) => {
-        const productId = req.params.id;
-        Review.Comment.findByIdAndDelete(productId, (err, data) => {
+    deleteProjectReview: (req, res, next) => {
+        const projectId = req.params.id;
+        Review.Comment.findByIdAndDelete(projectId, (err, data) => {
             if (err) {
                 res.send(err.message);
             } else {
@@ -40,4 +39,4 @@ const products = {
     }
 };
 
-module.exports = products;
+module.exports = projects;

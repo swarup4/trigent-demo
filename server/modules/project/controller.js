@@ -1,8 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 
-const Product = require('./models');
-const productMiddleware = require('../../middleware/product');
+const Project = require('./models');
+const projectMiddleware = require('../../middleware/project');
 const userMiddleware = require('../../middleware/user');
 // const uploadMiddleware = require('../../middleware/uploadImage');
 
@@ -11,13 +11,13 @@ const router = express.Router();
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage });
 
-router.get('/getAllProduct', async (req, res) => {
+router.get('/getAllProject', async (req, res) => {
     // let aggregate = [
     //     {
     //         $lookup: {
     //             from: 'feedbacks',
     //             localField: '_id',
-    //             foreignField: 'productId',
+    //             foreignField: 'projectId',
     //             as: 'feedback'
     //         }
     //     }, {
@@ -41,10 +41,10 @@ router.get('/getAllProduct', async (req, res) => {
     //             fname: '$user.fname',
     //             lname: '$user.lname',
     //             collab: '$collab',
-    //             productName: '$productName',
+    //             projectName: '$projectName',
     //             category: '$category',
     //             subCategory: '$subCategory',
-    //             productType: '$productType',
+    //             projectType: '$projectType',
     //             location: '$location',
     //             size: '$size',
     //             price: '$price',
@@ -52,7 +52,7 @@ router.get('/getAllProduct', async (req, res) => {
     //             rarity: '$rarity',
     //             waysToBuy: '$waysToBuy',
     //             buyFrom: '$buyFrom',
-    //             productImage: '$productImage',
+    //             projectImage: '$projectImage',
     //             createdDate: '$createdDate',
     //             status: '$status',
     //             feedback: {
@@ -74,10 +74,10 @@ router.get('/getAllProduct', async (req, res) => {
     //             fname: { $first: '$fname' },
     //             lname: { $first: '$lname' },
     //             collab: { $first: '$collab' },
-    //             productName: { $first: '$productName' },
+    //             projectName: { $first: '$projectName' },
     //             category: { $first: '$category' },
     //             subCategory: { $first: '$subCategory' },
-    //             productType: { $first: '$productType' },
+    //             projectType: { $first: '$projectType' },
     //             location: { $first: '$location' },
     //             size: { $first: '$size' },
     //             price: { $first: '$price' },
@@ -85,7 +85,7 @@ router.get('/getAllProduct', async (req, res) => {
     //             rarity: { $first: '$rarity' },
     //             waysToBuy: { $first: '$waysToBuy' },
     //             buyFrom: { $first: '$buyFrom' },
-    //             productImage: { $first: '$productImage' },
+    //             projectImage: { $first: '$projectImage' },
     //             like: {
     //                 $sum: { $cond: ['$feedback.like', 1, 0] }
     //             },
@@ -107,22 +107,22 @@ router.get('/getAllProduct', async (req, res) => {
     // ];
 
     try {
-        // let product = await Product.Category.aggregate(aggregate);
-        const product = await Product.Category.find();
-        console.log(product.length)
-        res.json(product);
+        // let project = await Project.Category.aggregate(aggregate);
+        const project = await Project.Category.find();
+        console.log(project.length)
+        res.json(project);
     } catch (error) {
         res.send(error);
     }
 });
 
-router.get('/getProduct', async (req, res) => {
+router.get('/getProject', async (req, res) => {
     // let aggregate = [
     //     {
     //         $lookup: {
     //             from: 'feedbacks',
     //             localField: '_id',
-    //             foreignField: 'productId',
+    //             foreignField: 'projectId',
     //             as: 'feedback'
     //         }
     //     }, {
@@ -146,10 +146,10 @@ router.get('/getProduct', async (req, res) => {
     //             fname: '$user.fname',
     //             lname: '$user.lname',
     //             collab: '$collab',
-    //             productName: '$productName',
+    //             projectName: '$projectName',
     //             category: '$category',
     //             subCategory: '$subCategory',
-    //             productType: '$productType',
+    //             projectType: '$projectType',
     //             location: '$location',
     //             size: '$size',
     //             price: '$price',
@@ -157,7 +157,7 @@ router.get('/getProduct', async (req, res) => {
     //             rarity: '$rarity',
     //             waysToBuy: '$waysToBuy',
     //             buyFrom: '$buyFrom',
-    //             productImage: '$productImage',
+    //             projectImage: '$projectImage',
     //             createdDate: '$createdDate',
     //             status: '$status',
     //             feedback: {
@@ -179,10 +179,10 @@ router.get('/getProduct', async (req, res) => {
     //             fname: { $first: '$fname' },
     //             lname: { $first: '$lname' },
     //             collab: { $first: '$collab' },
-    //             productName: { $first: '$productName' },
+    //             projectName: { $first: '$projectName' },
     //             category: { $first: '$category' },
     //             subCategory: { $first: '$subCategory' },
-    //             productType: { $first: '$productType' },
+    //             projectType: { $first: '$projectType' },
     //             location: { $first: '$location' },
     //             size: { $first: '$size' },
     //             price: { $first: '$price' },
@@ -190,7 +190,7 @@ router.get('/getProduct', async (req, res) => {
     //             rarity: { $first: '$rarity' },
     //             waysToBuy: { $first: '$waysToBuy' },
     //             buyFrom: { $first: '$buyFrom' },
-    //             productImage: { $first: '$productImage' },
+    //             projectImage: { $first: '$projectImage' },
     //             like: {
     //                 $sum: { $cond: ['$feedback.like', 1, 0] }
     //             },
@@ -215,9 +215,9 @@ router.get('/getProduct', async (req, res) => {
 
     try {
         const filter = req.query;
-        // let product = await Product.Category.aggregate(aggregate);
-        const product = await Product.Category.find(filter);
-        res.json(product);
+        // let project = await Project.Category.aggregate(aggregate);
+        const project = await Project.Category.find(filter);
+        res.json(project);
     } catch (error) {
         res.send(error);
     }
@@ -227,10 +227,10 @@ router.get('/getProduct', async (req, res) => {
 {
     "userId": "609ab05eabddac700c9e5420",
     "collab": "609ab05eabddac700c9e5420",
-    "productName": "The Abstract Ocean Bubble 100% Hand Painted Wall Painting (With Outer Floater frame)",
+    "projectName": "The Abstract Ocean Bubble 100% Hand Painted Wall Painting (With Outer Floater frame)",
     "category": "Art",
     "subCategory": "Prints",
-    "productType": "Photography",
+    "projectType": "Photography",
     "stock": 1,
     "price": 7999.00,
     "discPrice": 7100,
@@ -246,14 +246,14 @@ router.get('/getProduct', async (req, res) => {
     "buyFrom": "Artists"
 }
 */
-router.post('/addProduct', userMiddleware.varifyToken, async (req, res) => {
+router.post('/addProject', userMiddleware.varifyToken, async (req, res) => {
     try {
-        const model = new Product.Category(req.body);
-        const product = await model.save();
-        if (product) {
+        const model = new Project.Category(req.body);
+        const project = await model.save();
+        if (project) {
             res.json({
                 success: true,
-                message: 'Add Product Data'
+                message: 'Add Project Data'
             });
         };
     } catch (error) {
@@ -261,15 +261,15 @@ router.post('/addProduct', userMiddleware.varifyToken, async (req, res) => {
     }
 });
 
-router.put('/updateProduct/:id', userMiddleware.varifyToken, async (req, res) => {
+router.put('/updateProject/:id', userMiddleware.varifyToken, async (req, res) => {
     try {
         const id = req.params.id;
         const body = req.body;
-        const product = await Product.Category.findOneAndUpdate({ _id: id }, body);
-        if (product) {
+        const project = await Project.Category.findOneAndUpdate({ _id: id }, body);
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {
@@ -277,14 +277,14 @@ router.put('/updateProduct/:id', userMiddleware.varifyToken, async (req, res) =>
     }
 });
 
-router.delete('/deleteProduct/:id', userMiddleware.varifyToken, productMiddleware.deleteProductDetails, productMiddleware.deleteProductReview, async (req, res) => {
+router.delete('/deleteProject/:id', userMiddleware.varifyToken, projectMiddleware.deleteProjectDetails, projectMiddleware.deleteProjectReview, async (req, res) => {
     try {
         const id = req.params.id;
-        const product = await Product.Category.findOneAndDelete({ _id: id });
-        if (product) {
+        const project = await Project.Category.findOneAndDelete({ _id: id });
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {
@@ -293,15 +293,15 @@ router.delete('/deleteProduct/:id', userMiddleware.varifyToken, productMiddlewar
 });
 
 
-// Product Details
-router.get('/productDetails/:id', async (req, res) => {
+// Project Details
+router.get('/projectDetails/:id', async (req, res) => {
     try {
-        const productId = req.params.id;
-        const product = await Product.Details.find({ productId: productId });
-        if (product) {
+        const projectId = req.params.id;
+        const project = await Project.Details.find({ projectId: projectId });
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {
@@ -311,18 +311,18 @@ router.get('/productDetails/:id', async (req, res) => {
 
 /*
 {
-    productId: 609946fdba377359532041ca,
-    productDescription: "String"
+    projectId: 609946fdba377359532041ca,
+    projectDescription: "String"
 }
 */
-router.post('/addProductDetails', userMiddleware.varifyToken, async (req, res) => {
+router.post('/addProjectDetails', userMiddleware.varifyToken, async (req, res) => {
     try {
-        let model = new Product.Details(req.body);
-        let product = await model.save();
-        if (product) {
+        let model = new Project.Details(req.body);
+        let project = await model.save();
+        if (project) {
             res.json({
                 success: true,
-                message: 'Product Details Add into database'
+                message: 'Project Details Add into database'
             });
         }
     } catch (error) {
@@ -330,15 +330,15 @@ router.post('/addProductDetails', userMiddleware.varifyToken, async (req, res) =
     }
 });
 
-router.put('/updateProductDetails/:id', userMiddleware.varifyToken, async (req, res) => {
+router.put('/updateProjectDetails/:id', userMiddleware.varifyToken, async (req, res) => {
     try {
         const id = req.params.id;
         const body = req.body;
-        const product = await Product.Details.findOneAndUpdate({ _id: id }, body);
-        if (product) {
+        const project = await Project.Details.findOneAndUpdate({ _id: id }, body);
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {
@@ -346,16 +346,16 @@ router.put('/updateProductDetails/:id', userMiddleware.varifyToken, async (req, 
     }
 });
 
-router.post('/addProductImage', userMiddleware.varifyToken, upload.single("product"), productMiddleware.uploadProductImage);
+router.post('/addProjectImage', userMiddleware.varifyToken, upload.single("project"), projectMiddleware.uploadProjectImage);
 
-router.post('/uploadProductImage', userMiddleware.varifyToken, async (req, res) => {
+router.post('/uploadProjectImage', userMiddleware.varifyToken, async (req, res) => {
     try {
-        let model = new Product.Image(req.body);
-        let product = await model.save();
-        if (product) {
+        let model = new Project.Image(req.body);
+        let project = await model.save();
+        if (project) {
             res.json({
                 success: true,
-                message: 'Product Images uploaded successfully into Database'
+                message: 'Project Images uploaded successfully into Database'
             });
         }
     } catch (error) {
@@ -367,11 +367,11 @@ router.post('/uploadProductImage', userMiddleware.varifyToken, async (req, res) 
 router.get('/getVariant', async (req, res) => {
     try {
         const id = req.params.id;
-        const product = await Product.Variant.findOne({ _id: id });
-        if (product) {
+        const project = await Project.Variant.findOne({ _id: id });
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {
@@ -400,14 +400,14 @@ router.get('/getVariant', async (req, res) => {
 router.post('/addVariant', userMiddleware.varifyToken, async (req, res) => {
     try {
         const obj = req.body;
-        obj.fieldName = "ProductVarient";
+        obj.fieldName = "ProjectVarient";
         obj.updatedDate = new Date();
 
-        let product = await Product.Variant.findOneAndUpdate({ fieldName: "ProductVarient" }, obj, { new: true, upsert: true });
-        if (product) {
+        let project = await Project.Variant.findOneAndUpdate({ fieldName: "ProjectVarient" }, obj, { new: true, upsert: true });
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {
@@ -418,7 +418,7 @@ router.post('/addVariant', userMiddleware.varifyToken, async (req, res) => {
 // router.put('/updateVariant/:id', (req, res) => {
 //     const id = req.params.id;
 //     const body = req.body;
-//     Product.Variant.findOneAndUpdate({ _id: id }, body, (err, data) => {
+//     Project.Variant.findOneAndUpdate({ _id: id }, body, (err, data) => {
 //         if (err) {
 //             res.send(err.message);
 //         } else {
@@ -428,7 +428,7 @@ router.post('/addVariant', userMiddleware.varifyToken, async (req, res) => {
 // });
 
 // Get all wishlist Based on User Id
-router.get('/getProductByUser/:userId', async (req, res) => {
+router.get('/getProjectByUser/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
         const aggregate = [
@@ -441,7 +441,7 @@ router.get('/getProductByUser/:userId', async (req, res) => {
                 $lookup: {
                     from: 'feedbacks',
                     localField: '_id',
-                    foreignField: 'productId',
+                    foreignField: 'projectId',
                     as: 'feedback'
                 }
             }, {
@@ -465,10 +465,10 @@ router.get('/getProductByUser/:userId', async (req, res) => {
                     fname: '$user.fname',
                     lname: '$user.lname',
                     collab: '$collab',
-                    productName: '$productName',
+                    projectName: '$projectName',
                     category: '$category',
                     subCategory: '$subCategory',
-                    productType: '$productType',
+                    projectType: '$projectType',
                     location: '$location',
                     size: '$size',
                     price: '$price',
@@ -476,7 +476,7 @@ router.get('/getProductByUser/:userId', async (req, res) => {
                     rarity: '$rarity',
                     waysToBuy: '$waysToBuy',
                     buyFrom: '$buyFrom',
-                    productImage: '$productImage',
+                    projectImage: '$projectImage',
                     createdDate: '$createdDate',
                     status: '$status',
                     feedback: {
@@ -498,10 +498,10 @@ router.get('/getProductByUser/:userId', async (req, res) => {
                     fname: { $first: '$fname' },
                     lname: { $first: '$lname' },
                     collab: { $first: '$collab' },
-                    productName: { $first: '$productName' },
+                    projectName: { $first: '$projectName' },
                     category: { $first: '$category' },
                     subCategory: { $first: '$subCategory' },
-                    productType: { $first: '$productType' },
+                    projectType: { $first: '$projectType' },
                     location: { $first: '$location' },
                     size: { $first: '$size' },
                     price: { $first: '$price' },
@@ -509,7 +509,7 @@ router.get('/getProductByUser/:userId', async (req, res) => {
                     rarity: { $first: '$rarity' },
                     waysToBuy: { $first: '$waysToBuy' },
                     buyFrom: { $first: '$buyFrom' },
-                    productImage: { $first: '$productImage' },
+                    projectImage: { $first: '$projectImage' },
                     like: {
                         $sum: { $cond: ['$feedback.like', 1, 0] }
                     },
@@ -530,11 +530,11 @@ router.get('/getProductByUser/:userId', async (req, res) => {
             }
         ];
 
-        const product = await Product.Category.aggregate(aggregate);
-        if (product) {
+        const project = await Project.Category.aggregate(aggregate);
+        if (project) {
             res.json({
                 success: true,
-                data: product
+                data: project
             });
         };
     } catch (error) {

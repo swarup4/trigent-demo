@@ -226,33 +226,6 @@ function getUserId(req, res, next) {
 }
 
 
-// router.get("/generateVarificationCode/:type/:data", getUserId, userMiddleware.getUserInfo, (req, res) => {
-//     const type = req.params.type;      // For Mail & Send Message
-//     const id = req.params.id;
-//     const securityCode = userMiddleware.generateSecurityCode();
-//     const securityCodeText = "Varification Code is " + securityCode;
-//     const securityCodeTemplate = "<h1>Email varification code is " + securityCode + "</h1>";
-//     User.Auth.findOneAndUpdate({ _id: id }, { securityCode: securityCode }, {
-//         timestamps: { createdAt: false, updatedAt: true }
-//     }, (err, user) => {
-//         if (err) {
-//             res.send(err);
-//         } else {
-//             // For Mail & Send Message
-//             if (type == 'email') {
-//                 email(user.email, 'Security Code', securityCodeTemplate, securityCodeText).then(data => {
-//                     res.send(data);
-//                 }, err => {
-//                     console.log(err);
-//                     res.send(err);
-//                 });
-//             } else {
-//                 res.send(securityCode);
-//             }
-//         }
-//     })
-// });
-
 router.put("/varification/:type/:id", userMiddleware.varifyToken, (req, res) => {
     const obj = {};
     const id = req.params.id;
@@ -340,19 +313,19 @@ router.put("/updateUserDetails/:id", userMiddleware.varifyToken, async (req, res
 });
 
 
-// router.post('/uploadProfilePics/:id', userMiddleware.varifyToken, upload.single("profile"), uploadMiddleware.uploadImage, (req, res) => {
-//     let obj = {
-//         userId: req.params.id,
-//         profilePics: req.file.originalname
-//     }
-//     let model = new user.ProfilePics(obj);
-//     model.save((err, profile) => {
-//         if (err) {
-//             res.send(err);
-//         } else {
-//             res.json('Profile picture uploaded successfully');
-//         }
-//     });
-// });
+router.post('/uploadProfilePics/:id', userMiddleware.varifyToken, upload.single("profile"), uploadMiddleware.uploadImage, (req, res) => {
+    let obj = {
+        userId: req.params.id,
+        profilePics: req.file.originalname
+    }
+    let model = new user.ProfilePics(obj);
+    model.save((err, profile) => {
+        if (err) {
+            res.send(err);
+        } else {
+            res.json('Profile picture uploaded successfully');
+        }
+    });
+});
 
 module.exports = router;
