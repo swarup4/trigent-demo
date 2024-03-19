@@ -9,7 +9,7 @@ const controller = require('./modules');
 
 const app = express();
 // const cpus = os.cpus().length;
-const port = process.env.PORT;
+const port = process.env.PORT | 3001;
 
 
 // if (cluster.isMaster) {

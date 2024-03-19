@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 
 const Project = require('./models');
-const projectMiddleware = require('../../middleware/project');
+// const projectMiddleware = require('../../middleware/project');
 const userMiddleware = require('../../middleware/user');
 // const uploadMiddleware = require('../../middleware/uploadImage');
 
@@ -277,20 +277,20 @@ router.put('/updateProject/:id', userMiddleware.varifyToken, async (req, res) =>
     }
 });
 
-router.delete('/deleteProject/:id', userMiddleware.varifyToken, projectMiddleware.deleteProjectDetails, projectMiddleware.deleteProjectReview, async (req, res) => {
-    try {
-        const id = req.params.id;
-        const project = await Project.Category.findOneAndDelete({ _id: id });
-        if (project) {
-            res.json({
-                success: true,
-                data: project
-            });
-        };
-    } catch (error) {
-        res.send(error);
-    }
-});
+// router.delete('/deleteProject/:id', userMiddleware.varifyToken, projectMiddleware.deleteProjectDetails, projectMiddleware.deleteProjectReview, async (req, res) => {
+//     try {
+//         const id = req.params.id;
+//         const project = await Project.Category.findOneAndDelete({ _id: id });
+//         if (project) {
+//             res.json({
+//                 success: true,
+//                 data: project
+//             });
+//         };
+//     } catch (error) {
+//         res.send(error);
+//     }
+// });
 
 
 // Project Details
@@ -346,7 +346,7 @@ router.put('/updateProjectDetails/:id', userMiddleware.varifyToken, async (req, 
     }
 });
 
-router.post('/addProjectImage', userMiddleware.varifyToken, upload.single("project"), projectMiddleware.uploadProjectImage);
+// router.post('/addProjectImage', userMiddleware.varifyToken, upload.single("project"), projectMiddleware.uploadProjectImage);
 
 router.post('/uploadProjectImage', userMiddleware.varifyToken, async (req, res) => {
     try {

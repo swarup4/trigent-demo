@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 // const config = require('../helper/config');
 const User = require('../modules/user/models');
-const Admin = require('../modules/admin/models');
+// const Admin = require('../modules/admin/models');
 
 let loginObj = {
     getUserInfo: (req, res, next) => {
@@ -63,33 +63,33 @@ let loginObj = {
 
     // Check Username for User is Exist or Not. & Also Check User Status.
     // Params Or Object : Username
-    checkExestingAdmin: (req, res, next) => {
-        let obj = req.body;
-        let conObj;
-        if ('email' in obj) {
-            conObj = { email: obj.email };
-        } else {
-            conObj = { phone: obj.phone };
-        }
-        Admin.Auth.findOne(conObj, (err, data) => {
-            if (err) {
-                res.send(err.message);
-            } else {
-                if (data) {
-                    let emailMsg = "", userMsg = "";
-                    if (data.email == obj.email) {
-                        emailMsg = "Email is Already Exist.";
-                    }
-                    if (data.phone == obj.phone) {
-                        userMsg = "Phone is Already Exist.";
-                    }
-                    res.send(emailMsg + " " + userMsg);
-                } else {
-                    next();
-                }
-            }
-        })
-    },
+    // checkExestingAdmin: (req, res, next) => {
+    //     let obj = req.body;
+    //     let conObj;
+    //     if ('email' in obj) {
+    //         conObj = { email: obj.email };
+    //     } else {
+    //         conObj = { phone: obj.phone };
+    //     }
+    //     Admin.Auth.findOne(conObj, (err, data) => {
+    //         if (err) {
+    //             res.send(err.message);
+    //         } else {
+    //             if (data) {
+    //                 let emailMsg = "", userMsg = "";
+    //                 if (data.email == obj.email) {
+    //                     emailMsg = "Email is Already Exist.";
+    //                 }
+    //                 if (data.phone == obj.phone) {
+    //                     userMsg = "Phone is Already Exist.";
+    //                 }
+    //                 res.send(emailMsg + " " + userMsg);
+    //             } else {
+    //                 next();
+    //             }
+    //         }
+    //     })
+    // },
     // Check Username for User is Exist or Not. & Also Check User Status.
     // Params Or Object : Username
     checkExestingUsername: (req, res, next) => {

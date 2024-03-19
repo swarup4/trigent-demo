@@ -86,7 +86,7 @@ router.post("/login", async (req, res) => {
         "phone": 9035845781
  * }
  */
-router.post("/signup", userMiddleware.checkExestingUser, async (req, res) => {
+router.post("/signup", async (req, res) => {
     try {
         const model = new User.Auth(req.body);
         const user = await model.save();
@@ -313,19 +313,19 @@ router.put("/updateUserDetails/:id", userMiddleware.varifyToken, async (req, res
 });
 
 
-router.post('/uploadProfilePics/:id', userMiddleware.varifyToken, upload.single("profile"), uploadMiddleware.uploadImage, (req, res) => {
-    let obj = {
-        userId: req.params.id,
-        profilePics: req.file.originalname
-    }
-    let model = new user.ProfilePics(obj);
-    model.save((err, profile) => {
-        if (err) {
-            res.send(err);
-        } else {
-            res.json('Profile picture uploaded successfully');
-        }
-    });
-});
+// router.post('/uploadProfilePics/:id', userMiddleware.varifyToken, upload.single("profile"), uploadMiddleware.uploadImage, (req, res) => {
+//     let obj = {
+//         userId: req.params.id,
+//         profilePics: req.file.originalname
+//     }
+//     let model = new user.ProfilePics(obj);
+//     model.save((err, profile) => {
+//         if (err) {
+//             res.send(err);
+//         } else {
+//             res.json('Profile picture uploaded successfully');
+//         }
+//     });
+// });
 
 module.exports = router;

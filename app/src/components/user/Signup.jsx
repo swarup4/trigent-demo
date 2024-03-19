@@ -29,21 +29,19 @@ export default function Signup() {
         initialValues: initialValues,
         validationSchema: schema,
         onSubmit: (values, action) => {
-            console.log(values);
             signup(values);
         }
     });
 
     function signup(data) {
         const url = `${HOST_URL}user/signup`
-        // axios.post(url, data).then(res => {
-        //     sessionStorage.auth = res.data.token;
-        //     const location = sessionStorage.url;
-        //     navigate(location);
-        // }).catch(err => {
-        //     console.log(err)
-        // })
-        console.log(data);
+        axios.post(url, data).then(res => {
+            sessionStorage.auth = res.data.token;
+            const location = sessionStorage.url;
+            navigate(location);
+        }).catch(err => {
+            console.log(err)
+        });
     }
 
     return (
@@ -75,6 +73,9 @@ export default function Signup() {
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                     />
                                 </div>
+                                {(errors.fname && touched.fname) ? (
+                                    <p className='mt-1 text-red-500'>{errors.fname}</p>
+                                ) : ''}
                             </div>
                         </div>
 
@@ -83,13 +84,16 @@ export default function Signup() {
                                 Role
                             </label>
                             <div className="mt-2">
-                                <select id="country" name="country" autoComplete="country-name" 
+                                <select id="role" name="role" autoComplete="role" value={values.role} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                    <option>Select Role</option>
-                                    <option>Admin</option>
-                                    <option>User</option>
-                                    <option>Client</option>
+                                    <option value=''>Select Role</option>
+                                    <option value='admin'>Admin</option>
+                                    <option value='user'>User</option>
+                                    <option value='client'>Client</option>
                                 </select>
+                                {(errors.role && touched.role) ? (
+                                    <p className='mt-1 text-red-500'>{errors.role}</p>
+                                ) : ''}
                             </div>
                         </div>
 
@@ -101,6 +105,9 @@ export default function Signup() {
                                 <input id="username" name="username" type="text" autoComplete="username" placeholder="Enter Username" value={values.username} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
+                                {(errors.username && touched.username) ? (
+                                    <p className='mt-1 text-red-500'>{errors.username}</p>
+                                ) : ''}
                             </div>
                         </div>
 
@@ -112,6 +119,9 @@ export default function Signup() {
                                 <input id="email" name="email" type="email" autoComplete="email" placeholder="Enter Email" value={values.email} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
+                                {(errors.email && touched.email) ? (
+                                    <p className='mt-1 text-red-500'>{errors.email}</p>
+                                ) : ''}
                             </div>
                         </div>
 
@@ -123,6 +133,9 @@ export default function Signup() {
                                 <input id="password" name="password" type="password" autoComplete="current-password" placeholder="Enter Password" value={values.password} onChange={handleChange} onBlur={handleBlur}
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                 />
+                                {(errors.password && touched.password) ? (
+                                    <p className='mt-1 text-red-500'>{errors.password}</p>
+                                ) : ''}
                             </div>
                         </div>
 
