@@ -89,6 +89,7 @@ router.post("/login", async (req, res) => {
 router.post("/signup", async (req, res) => {
     try {
         const model = new User.Auth(req.body);
+        console.log(model);
         const user = await model.save();
         const obj = { id: user._id, email: user.email };
         const token = jwt.sign(obj, process.env.SECRATE_KEY, {

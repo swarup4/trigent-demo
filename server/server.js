@@ -23,8 +23,6 @@ const port = process.env.PORT | 3001;
 //         cluster.fork();
 //     });
 // } else {
-
-    
     mongoose.connect(process.env.MONGO_DB, {
         useNewUrlParser: true,
         useUnifiedTopology: true

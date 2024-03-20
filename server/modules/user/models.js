@@ -63,5 +63,5 @@ module.exports = {
     Auth: mongoose.model("user", userSchema),
     Company: mongoose.model("company", companySchema),
     ProfilePics: mongoose.model("userProfilePics", userProfilePicsSchema),
-    UserProject: mongoose.model("userProjectSchema", userProjectSchema)
+    UserProject: mongoose.model("userProject", userProjectSchema)
 };
