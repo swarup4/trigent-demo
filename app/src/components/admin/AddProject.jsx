@@ -1,12 +1,40 @@
 import React, { Fragment, useEffect, useState } from 'react'
+import { useFormik } from 'formik'
+import { object, string, ref } from 'yup'
 import { PhotoIcon, UserCircleIcon } from '@heroicons/react/24/solid'
 import { Dialog, Disclosure, Menu, Transition } from '@headlessui/react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 
 
+const initialValues = {
+    fname: '',
+    lname: '',
+    role: '',
+    username: '',
+    email: '',
+    password: ''
+};
+const schema = object({
+    fname: string().required('Enter your First name'),
+    lname: string().required('Enter your Last name'),
+    role: string().required('Select your role'),
+    username: string().required('Enter your username'),
+    email: string().email('Email should be valid').required('Enter your email'),
+    password: string().required('Enter your password')
+});
+
 export default function AddProject() {
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
+    
+    const { values, errors, handleBlur, handleChange, handleSubmit, touched } = useFormik({
+        initialValues: initialValues,
+        validationSchema: schema,
+        onSubmit: (values, action) => {
+            // signup(values);
+        }
+    });
+
     return (
         <>
             <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -151,43 +179,49 @@ export default function AddProject() {
                         </div>
 
                         <div className="border-b border-gray-900/10 pb-12">
-                            <h2 className="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
-                            <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
+                            <h2 className="text-base font-semibold leading-7 text-gray-900">Project Information</h2>
+                            {/* <p className="mt-1 text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p> */}
 
                             <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
                                 <div className="sm:col-span-3">
                                     <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                        First name
+                                        Category
                                     </label>
                                     <div className="mt-2">
-                                        <input
-                                            type="text"
-                                            name="first-name"
-                                            id="first-name"
-                                            autoComplete="given-name"
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        />
+                                        <select id="role" name="role" autoComplete="role" value={values.role} onChange={handleChange} onBlur={handleBlur}
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <option value=''>Select Role</option>
+                                            <option value='admin'>Admin</option>
+                                            <option value='user'>User</option>
+                                            <option value='client'>Client</option>
+                                        </select>
+                                        {(errors.role && touched.role) ? (
+                                            <p className='mt-1 text-red-500'>{errors.role}</p>
+                                        ) : ''}
                                     </div>
                                 </div>
 
                                 <div className="sm:col-span-3">
                                     <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Last name
+                                        Sub Category
                                     </label>
                                     <div className="mt-2">
-                                        <input
-                                            type="text"
-                                            name="last-name"
-                                            id="last-name"
-                                            autoComplete="family-name"
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                        />
+                                        <select id="role" name="role" autoComplete="role" value={values.role} onChange={handleChange} onBlur={handleBlur}
+                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                            <option value=''>Select Role</option>
+                                            <option value='admin'>Admin</option>
+                                            <option value='user'>User</option>
+                                            <option value='client'>Client</option>
+                                        </select>
+                                        {(errors.role && touched.role) ? (
+                                            <p className='mt-1 text-red-500'>{errors.role}</p>
+                                        ) : ''}
                                     </div>
                                 </div>
 
-                                <div className="sm:col-span-4">
+                                <div className="sm:col-span-3">
                                     <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Email address
+                                        Tech Stack
                                     </label>
                                     <div className="mt-2">
                                         <input
@@ -201,20 +235,25 @@ export default function AddProject() {
                                 </div>
 
                                 <div className="sm:col-span-3">
-                                    <label htmlFor="country" className="block text-sm font-medium leading-6 text-gray-900">
-                                        Country
-                                    </label>
                                     <div className="mt-2">
-                                        <select
-                                            id="country"
-                                            name="country"
-                                            autoComplete="country-name"
-                                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6"
-                                        >
-                                            <option>United States</option>
-                                            <option>Canada</option>
-                                            <option>Mexico</option>
-                                        </select>
+                                        <span class="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">
+                                            React JS<button className="ml-1"><XMarkIcon className="h-3.5 w-3.5"/></button>
+                                        </span>
+                                        <span class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                                            Node JS<button className="ml-1"><XMarkIcon className="h-3.5 w-3.5"/></button>
+                                        </span>
+                                        <span class="inline-flex items-center rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-800 ring-1 ring-inset ring-yellow-600/20">
+                                            Mongo DB<button className="ml-1"><XMarkIcon className="h-3.5 w-3.5"/></button>
+                                        </span>
+                                        <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                                            AWS<button className="ml-1"><XMarkIcon className="h-3.5 w-3.5"/></button>
+                                        </span>
+                                        <span class="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10">
+                                            Socket.IO<button className="ml-1"><XMarkIcon className="h-3.5 w-3.5"/></button>
+                                        </span>
+                                        <span class="inline-flex items-center rounded-md bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+                                            Docker<button className="ml-1"><XMarkIcon className="h-3.5 w-3.5"/></button>
+                                        </span>
                                     </div>
                                 </div>
 
