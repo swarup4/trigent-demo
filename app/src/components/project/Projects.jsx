@@ -4,7 +4,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import axios from 'axios';
 
-import ProductList from './ProductList'
+import ProductList from './ProjectList'
 
 
 const sortOptions = [
