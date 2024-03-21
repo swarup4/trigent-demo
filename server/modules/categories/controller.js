@@ -11,31 +11,43 @@ const router = express.Router();
 
 router.get('/getFilter', async (req, res) => {
     try {
-        // let project = await Project.Category.aggregate(aggregate);
-        const project = await Project.Category.find();
-        console.log(project.length)
-        res.json(project);
+        const data = await Category.Category.aggregate([
+            {
+                $lookup: {
+                    from: "subcategories",
+                    localField: "options",
+                    foreignField: "_id",
+                    as: "subCategory",
+                },
+            }, {
+                $unset: ["options", "createdAt", "updatedAt", "status"],
+            }, {
+                $project: {
+                    name: "$name",
+                    subCategory: {
+                        $reduce: {
+                            input: "$subCategory",
+                            initialValue: [],
+                            in: {
+                                $concatArrays: ["$$value",
+                                    [{
+                                        $mergeObjects: ["$$this", {
+                                            checked: false,
+                                        }]
+                                    }]
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        ]);
+        res.json(data);
     } catch (error) {
         res.send(error);
     }
 });
 
-router.get('/getProject', async (req, res) => {
-    try {
-        const filter = req.query;
-        // let project = await Project.Category.aggregate(aggregate);
-        const project = await Project.Category.find(filter);
-        res.json(project);
-    } catch (error) {
-        res.send(error);
-    }
-});
-
-/* 
-{
-    
-}
-*/
 
 // Category
 router.post('/addCategory', async (req, res) => {
@@ -70,22 +82,22 @@ router.put('/updateCategory/:id', async (req, res) => {
 });
 
 router.put('/mapSubCategory/:id', (req, res) => {
-        const id = req.params.id;
-        const body = req.body.subCategory;
+    const id = req.params.id;
+    const body = req.body.subCategory;
 
-        let arr = [];
-        for (const i of body) {
-            const cate = Category.Category.updateOne({ _id: id }, { $push: { options: i } });
-            arr.push(cate);
-        }
-        Promise.allSettled(arr).then(data => {
-            res.json({
-                success: true,
-                data: data
-            });
-        }).catch(err => {
-            res.send(err);
+    let arr = [];
+    for (const i of body) {
+        const cate = Category.Category.updateOne({ _id: id }, { $push: { options: i } });
+        arr.push(cate);
+    }
+    Promise.allSettled(arr).then(data => {
+        res.json({
+            success: true,
+            data: data
         });
+    }).catch(err => {
+        res.send(err);
+    });
 });
 
 router.delete('/deleteCategory/:id', async (req, res) => {

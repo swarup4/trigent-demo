@@ -21,43 +21,6 @@ const subCategories = [
     { name: 'Hip Bags', href: '#' },
     { name: 'Laptop Sleeves', href: '#' },
 ]
-const filters = [
-    {
-        id: 'color',
-        name: 'Color',
-        options: [
-            { value: 'white', label: 'White', checked: false },
-            { value: 'beige', label: 'Beige', checked: false },
-            { value: 'blue', label: 'Blue', checked: true },
-            { value: 'brown', label: 'Brown', checked: false },
-            { value: 'green', label: 'Green', checked: false },
-            { value: 'purple', label: 'Purple', checked: false },
-        ],
-    },
-    {
-        id: 'category',
-        name: 'Category',
-        options: [
-            { value: 'new-arrivals', label: 'New Arrivals', checked: false },
-            { value: 'sale', label: 'Sale', checked: false },
-            { value: 'travel', label: 'Travel', checked: true },
-            { value: 'organization', label: 'Organization', checked: false },
-            { value: 'accessories', label: 'Accessories', checked: false },
-        ],
-    },
-    {
-        id: 'size',
-        name: 'Size',
-        options: [
-            { value: '2l', label: '2L', checked: false },
-            { value: '6l', label: '6L', checked: false },
-            { value: '12l', label: '12L', checked: false },
-            { value: '18l', label: '18L', checked: false },
-            { value: '20l', label: '20L', checked: false },
-            { value: '40l', label: '40L', checked: true },
-        ],
-    },
-]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
@@ -66,46 +29,17 @@ function classNames(...classes) {
 export default function Products() {
 
     const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false)
-    const [product, setProduct] = useState([])
+    const [filter, setFilter] = useState([]);
 
-    // useEffect(() => {
-    //     const controller = new AbortController();
-    //     const signal = controller.signal;
-
-    //     fetch('localhost:3001/product', { signal })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             setProduct(data);
-    //         }).catch(err => {
-    //             if (err.name == "AbortError") {
-    //                 console.log("Request Cancel of the API Call");
-    //             } else {
-    //                 console.log(err);
-    //             }
-    //         })
-    //     return () => {
-    //         controller.abort();
-    //     }
-    // }, [])
-
-    // useEffect(() => {
-    //     const cancelToken = axios.CancelToken.source();
-
-    //     axios.get('localhost:3001/product', { cancelToken: cancelToken.token })
-    //         .then(res => {
-    //             setProduct(res.data);
-    //         }).catch(err => {
-    //             if (axios.isCancel(err)) {
-    //                 console.log("Request Cancel of the API Call");
-    //             } else {
-    //                 console.log(err);
-    //             }
-    //         });
-
-    //     return () => {
-    //         cancelToken.cancel();
-    //     }
-    // }, [])
+    useEffect(() => {
+        axios.get('http://localhost:3001/category/getFilter')
+            .then(res => {
+                let filter = res.data;
+                setFilter(filter);
+            }).catch(err => {
+                console.log(err);
+            })
+    }, []);
 
     return (
         <div className="bg-white">
@@ -161,8 +95,8 @@ export default function Products() {
                                             ))}
                                         </ul>
 
-                                        {filters.map((section) => (
-                                            <Disclosure as="div" key={section.id} className="border-t border-gray-200 px-4 py-6">
+                                        {filter.map((section) => (
+                                            <Disclosure as="div" key={section._id} className="border-t border-gray-200 px-4 py-6">
                                                 {({ open }) => (
                                                     <>
                                                         <h3 className="-mx-2 -my-3 flow-root">
@@ -180,20 +114,20 @@ export default function Products() {
                                                         <Disclosure.Panel className="pt-6">
                                                             <div className="space-y-6">
                                                                 {section.options.map((option, optionIdx) => (
-                                                                    <div key={option.value} className="flex items-center">
+                                                                    <div key={option.name} className="flex items-center">
                                                                         <input
-                                                                            id={`filter-mobile-${section.id}-${optionIdx}`}
-                                                                            name={`${section.id}[]`}
-                                                                            defaultValue={option.value}
+                                                                            id={`filter-mobile-${section._id}-${optionIdx}`}
+                                                                            name={`${section._id}[]`}
+                                                                            defaultValue={option.name}
                                                                             type="checkbox"
                                                                             defaultChecked={option.checked}
                                                                             className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                                         />
                                                                         <label
-                                                                            htmlFor={`filter-mobile-${section.id}-${optionIdx}`}
+                                                                            htmlFor={`filter-mobile-${section._id}-${optionIdx}`}
                                                                             className="ml-3 min-w-0 flex-1 text-gray-500"
                                                                         >
-                                                                            {option.label}
+                                                                            {option.name}
                                                                         </label>
                                                                     </div>
                                                                 ))}
@@ -294,8 +228,8 @@ export default function Products() {
                                     ))}
                                 </ul>
 
-                                {filters.map((section) => (
-                                    <Disclosure as="div" key={section.id} className="border-b border-gray-200 py-6">
+                                {filter.map((section) => (
+                                    <Disclosure as="div" key={section._id} className="border-b border-gray-200 py-6">
                                         {({ open }) => (
                                             <>
                                                 <h3 className="-my-3 flow-root">
@@ -312,21 +246,21 @@ export default function Products() {
                                                 </h3>
                                                 <Disclosure.Panel className="pt-6">
                                                     <div className="space-y-4">
-                                                        {section.options.map((option, optionIdx) => (
-                                                            <div key={option.value} className="flex items-center">
+                                                        {section.subCategory.map((option, optionIdx) => (
+                                                            <div key={option.name} className="flex items-center">
                                                                 <input
-                                                                    id={`filter-${section.id}-${optionIdx}`}
-                                                                    name={`${section.id}[]`}
-                                                                    defaultValue={option.value}
+                                                                    id={`filter-${section._id}-${optionIdx}`}
+                                                                    name={`${section._id}[]`}
+                                                                    defaultValue={option.name}
                                                                     type="checkbox"
                                                                     defaultChecked={option.checked}
                                                                     className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                                                 />
                                                                 <label
-                                                                    htmlFor={`filter-${section.id}-${optionIdx}`}
+                                                                    htmlFor={`filter-${section._id}-${optionIdx}`}
                                                                     className="ml-3 text-sm text-gray-600"
                                                                 >
-                                                                    {option.label}
+                                                                    {option.name}
                                                                 </label>
                                                             </div>
                                                         ))}

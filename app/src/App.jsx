@@ -9,6 +9,7 @@ import Login from './components/user/Login';
 import Signup from './components/user/Signup';
 import Error from './components/common/Error';
 import AddProject from './components/admin/AddProject';
+import AddCategory from './components/admin/AddCategory';
 // import ProductDetails from './components/product/ProductDetails';
 // import Cart from './components/cart/Cart';
 // import OrderList from './components/order/OrderList';
@@ -26,6 +27,9 @@ function App() {
                     element: <AddProject />
                 }
             ]
+        }, {
+            path: 'category',
+            element: <AddCategory />
         }, {
             path: 'dashboard',
             element: <Home />,
