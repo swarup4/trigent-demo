@@ -69,20 +69,23 @@ router.put('/updateCategory/:id', async (req, res) => {
     }
 });
 
-router.put('/mapSubCategory/:id', async (req, res) => {
-    try {
+router.put('/mapSubCategory/:id', (req, res) => {
         const id = req.params.id;
-        const body = req.body;
-        const cate = await Category.Category.update({ _id: id }, { $push: { options: body } });
-        if (cate) {
+        const body = req.body.subCategory;
+
+        let arr = [];
+        for (const i of body) {
+            const cate = Category.Category.updateOne({ _id: id }, { $push: { options: i } });
+            arr.push(cate);
+        }
+        Promise.allSettled(arr).then(data => {
             res.json({
                 success: true,
-                data: cate
+                data: data
             });
-        };
-    } catch (error) {
-        res.send(error);
-    }
+        }).catch(err => {
+            res.send(err);
+        });
 });
 
 router.delete('/deleteCategory/:id', async (req, res) => {
