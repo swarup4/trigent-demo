@@ -25,11 +25,11 @@ function App() {
                 {
                     path: '',
                     element: <AddProject />
+                }, {
+                    path: 'category',
+                    element: <AddCategory />
                 }
             ]
-        }, {
-            path: 'category',
-            element: <AddCategory />
         }, {
             path: 'dashboard',
             element: <Home />,

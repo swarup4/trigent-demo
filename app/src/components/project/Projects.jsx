@@ -219,15 +219,7 @@ export default function Products() {
                         <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
                             {/* Filters */}
                             <form className="hidden lg:block">
-                                <h3 className="sr-only">Categories</h3>
-                                <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-                                    {subCategories.map((category) => (
-                                        <li key={category.name}>
-                                            <a href={category.href}>{category.name}</a>
-                                        </li>
-                                    ))}
-                                </ul>
-
+                                <h3 className="">Categories</h3>
                                 {filter.map((section) => (
                                     <Disclosure as="div" key={section._id} className="border-b border-gray-200 py-6">
                                         {({ open }) => (

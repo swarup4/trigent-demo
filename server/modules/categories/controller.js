@@ -48,6 +48,15 @@ router.get('/getFilter', async (req, res) => {
     }
 });
 
+router.get('/getCategory', async (req, res) => {
+    try {
+        const data = await Category.Category.find();
+        res.json(data);
+    } catch (error) {
+        res.send(error);
+    }
+});
+
 
 // Category
 router.post('/addCategory', async (req, res) => {
@@ -117,6 +126,14 @@ router.delete('/deleteCategory/:id', async (req, res) => {
 
 
 // Sub Category
+router.get('/getSubCategory', async (req, res) => {
+    try {
+        const data = await Category.SubCategory.find();
+        res.json(data);
+    } catch (error) {
+        res.send(error);
+    }
+});
 router.post('/addSubCategory', async (req, res) => {
     try {
         const model = new Category.SubCategory(req.body);
