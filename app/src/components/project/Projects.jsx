@@ -150,12 +150,12 @@ export default function Products() {
 
                         <div className="flex items-center">
                             <div className='mr-2'>
-                                <span class="absolute inset-y-0 left-0 flex items-center pl-2">
-                                    <button type="submit" class="p-1 focus:outline-none focus:shadow-outline">
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-2">
+                                    <button type="submit" className="p-1 focus:outline-none focus:shadow-outline">
                                         <MagnifyingGlassIcon />
                                     </button>
                                 </span>
-                                <input type="search" name="q" class="py-2 text-sm rounded-md pl-10" placeholder="Search..." autocomplete="off" />
+                                <input type="search" name="q" className="py-2 text-sm rounded-md pl-10" placeholder="Search..." autocomplete="off" />
                             </div>
                             <Menu as="div" className="relative inline-block text-left">
                                 <div>

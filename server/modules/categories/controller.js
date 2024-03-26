@@ -63,10 +63,11 @@ router.post('/addCategory', async (req, res) => {
     try {
         const model = new Category.Category(req.body);
         const cate = await model.save();
+        console.log(cate);
         if (cate) {
             res.json({
                 success: true,
-                message: 'Add Category'
+                data: cate
             });
         };
     } catch (error) {
