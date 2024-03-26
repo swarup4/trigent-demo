@@ -56,14 +56,20 @@ export default function AddCategory() {
     }, []);
 
     function addCategoryData(data) {
-        debugger;
         let body = { name: data }
-        console.log(body);
-        // axios.post('http://localhost:3001/category/addCategory', body).then(res => {
-        //     setCategoryList([...categoryList, res.data])
-        // }).catch(err => {
-        //     console.log(err);
-        // });
+        axios.post('http://localhost:3001/category/addCategory', body).then(res => {
+            setCategoryList([...categoryList, res.data])
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function deleteCategoryData(id){
+        axios.post(`http://localhost:3001/category/deleteCategory/${id}`, body).then(res => {
+            setCategoryList([...categoryList, res.data])
+        }).catch(err => {
+            console.log(err);
+        });
     }
 
     return (
@@ -103,12 +109,6 @@ export default function AddCategory() {
                                 </div>
 
                                 <div className="col-span-full m-none h-96 overflow-auto text-gray-500">
-                                    {/* {categoryList.map((cate) => (
-                                        <div key={cate._id}>
-                                            {cate.name}
-                                        </div>
-                                    ))} */}
-
                                     <ul role="list" className="pt-6 pb-6 divide-y divide-slate-200">
                                         {categoryList.map((cate) => (
                                         <li className="flex py-4 first:pt-0 last:pb-0" key={cate._id}>
