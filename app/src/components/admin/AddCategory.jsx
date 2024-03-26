@@ -7,6 +7,7 @@ import { XMarkIcon, TrashIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, FunnelIcon, MinusIcon, PlusIcon, Squares2X2Icon } from '@heroicons/react/20/solid'
 import axios from 'axios'
 
+import OptionLIst from './OptionLIst'
 
 const initialValues = {
     fname: '',
@@ -27,15 +28,24 @@ const schema = object({
 
 export default function AddCategory() {
     const [categoryList, setCategoryList] = useState([]);
-    const [category, setCategory] = useState([]);
+    const [category, setCategory] = useState('');
+    const [categoryById, setCategoryById] = useState([]);
     const [subCategoryList, setSubCategoryList] = useState([]);
-    const [subCategory, setSubCategory] = useState([]);
+    const [subCategory, setSubCategory] = useState('');
 
     const handleChange = (event, addFunc) => {
         addFunc(event.target.value);
     };
 
     useEffect(() => {
+        getCategoryData();
+    }, []);
+
+    useEffect(() => {
+        getSubCategoryData();
+    }, []);
+
+    function getCategoryData(){
         axios.get('http://localhost:3001/category/getCategory')
             .then(res => {
                 let data = res.data;
@@ -43,9 +53,19 @@ export default function AddCategory() {
             }).catch(err => {
                 console.log(err);
             })
-    }, []);
+    }
+    function getCategoryById(id){
+        console.log(id)
+        axios.get(`http://localhost:3001/category/getCategoryById/${id}`)
+            .then(res => {
+                let data = res.data.options;
+                setCategoryById(data);
+            }).catch(err => {
+                console.log(err);
+            })
+    }
 
-    useEffect(() => {
+    function getSubCategoryData(){
         axios.get('http://localhost:3001/category/getSubCategory')
             .then(res => {
                 let data = res.data;
@@ -53,20 +73,38 @@ export default function AddCategory() {
             }).catch(err => {
                 console.log(err);
             })
-    }, []);
+    }
 
     function addCategoryData(data) {
         let body = { name: data }
         axios.post('http://localhost:3001/category/addCategory', body).then(res => {
-            setCategoryList([...categoryList, res.data])
+            setCategoryList([...categoryList, res.data]);
+            setCategory('');
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    function addSubCategoryData(data) {
+        let body = { name: data }
+        axios.post('http://localhost:3001/category/addSubCategory', body).then(res => {
+            setSubCategoryList([...subCategoryList, res.data])
+            setSubCategory('');
         }).catch(err => {
             console.log(err);
         });
     }
 
     function deleteCategoryData(id){
-        axios.post(`http://localhost:3001/category/deleteCategory/${id}`, body).then(res => {
-            setCategoryList([...categoryList, res.data])
+        axios.delete(`http://localhost:3001/category/deleteCategory/${id}`).then(res => {
+            getCategoryData();
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+    function deleteSubCategoryData(id){
+        axios.delete(`http://localhost:3001/category/deleteSubCategory/${id}`).then(res => {
+            getSubCategoryData();
         }).catch(err => {
             console.log(err);
         });
@@ -108,20 +146,7 @@ export default function AddCategory() {
                                     </div>
                                 </div>
 
-                                <div className="col-span-full m-none h-96 overflow-auto text-gray-500">
-                                    <ul role="list" className="pt-6 pb-6 divide-y divide-slate-200">
-                                        {categoryList.map((cate) => (
-                                        <li className="flex py-4 first:pt-0 last:pb-0" key={cate._id}>
-                                            <div className="ml-3 w-full">
-                                                <p className="text-sm font-medium w-full float-left text-gray-500">
-                                                    <span className='float-start'>{cate.name}</span>
-                                                    <a className="text-sm float-end"><XMarkIcon className="h-4 w-4"/> </a>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                                <OptionLIst list={categoryList} deleteFunct={deleteCategoryData} />
                             </div>
                         </div>
                         <div>
@@ -142,43 +167,24 @@ export default function AddCategory() {
                                                 <button type="button" className="text-sm font-semibold leading-6 text-gray-900">
                                                     Cancel
                                                 </button>
-                                                <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                                <button type="button" onClick={() => addSubCategoryData(subCategory)} className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                                                     Add
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="col-span-full m-none h-96 overflow-auto text-gray-500">
-                                    <ul role="list" className="pt-6 pb-6 divide-y divide-slate-200">
-                                        {subCategoryList.map((cate) => (
-                                        <li className="flex py-4 first:pt-0 last:pb-0" key={cate._id}>
-                                            <div className="ml-3 w-full">
-                                                <p className="text-sm font-medium w-full float-left text-gray-500">
-                                                    <span className='float-start'>{cate.name}</span>
-                                                    <a className="text-sm float-end"><XMarkIcon className="h-4 w-4"/> </a>
-                                                </p>
-                                            </div>
-                                        </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                                
+                                <OptionLIst list={subCategoryList} deleteFunct={deleteSubCategoryData} />
                             </div>
                         </div>
 
                         <div>
-                            {/* <div className=''>
-                                    <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                    <label className="ml-3 min-w-0 flex-1 text-gray-500">
-                                        {cate.name}
-                                    </label>
-                                </div> */}
                             <ul role="list" className="p-6 divide-y divide-slate-200">
                                 {categoryList.map((cate) => (
-                                    <li className="flex py-4 first:pt-0 last:pb-0 hover:bg-sky-700" key={cate._id}>
+                                    <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={cate._id} onClick={() => getCategoryById(cate._id)}>
                                         <div className="ml-3">
-                                            <p className="text-sm font-medium text-gray-500">{cate.name}</p>
-                                            {/* <p className="text-sm text-slate-500 truncate">{person.email}</p> */}
+                                            <p className="text-sm font-medium">{cate.name}</p>
                                         </div>
                                     </li>
                                 ))}
@@ -186,23 +192,26 @@ export default function AddCategory() {
 
                         </div>
                         <div>
-                            {/* {subCategory.map((cate) => (
-                                <div>
-                                    <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                                    <label className="ml-3 min-w-0 flex-1 text-gray-500">
-                                        {cate.name}
-                                    </label>
-                                </div>
-                            ))} */}
                             <ul role="list" className="p-6 divide-y divide-slate-200">
-                                {subCategoryList.map((cate) => (
-                                    <li className="flex py-4 first:pt-0 last:pb-0 hover:bg-sky-700" key={cate._id}>
-                                        <div className="ml-3">
-                                            <p className="text-sm font-medium text-gray-500">{cate.name}</p>
-                                            {/* <p className="text-sm text-slate-500 truncate">{person.email}</p> */}
-                                        </div>
-                                    </li>
-                                ))}
+                                {subCategoryList.map((subcate) => {
+                                    {categoryById.map((cate) => (
+                                        <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={subcate._id}>
+                                            <div className="ml-3">
+                                                <p className="text-sm font-medium">
+                                                    {subcate._id == cate ? (
+                                                        <div>
+                                                            <h6>Hello</h6>
+                                                            <input type="checkbox" checked className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
+                                                        </div>
+                                                    ) : (
+                                                        <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
+                                                    )}
+                                                    {subcate.name}
+                                                </p>
+                                            </div>
+                                        </li>
+                                    ))}
+                                })}
                             </ul>
                         </div>
                     </div>

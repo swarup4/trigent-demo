@@ -56,6 +56,16 @@ router.get('/getCategory', async (req, res) => {
         res.send(error);
     }
 });
+router.get('/getCategoryById/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        console.log(id);
+        const data = await Category.Category.find({ _id: id});
+        res.json(data[0]);
+    } catch (error) {
+        res.send(error);
+    }
+});
 
 
 // Category
@@ -65,10 +75,7 @@ router.post('/addCategory', async (req, res) => {
         const cate = await model.save();
         console.log(cate);
         if (cate) {
-            res.json({
-                success: true,
-                data: cate
-            });
+            res.json(cate);
         };
     } catch (error) {
         res.send(error);
@@ -101,10 +108,7 @@ router.put('/mapSubCategory/:id', (req, res) => {
         arr.push(cate);
     }
     Promise.allSettled(arr).then(data => {
-        res.json({
-            success: true,
-            data: data
-        });
+        res.json(data);
     }).catch(err => {
         res.send(err);
     });
@@ -140,10 +144,7 @@ router.post('/addSubCategory', async (req, res) => {
         const model = new Category.SubCategory(req.body);
         const data = await model.save();
         if (data) {
-            res.json({
-                success: true,
-                message: 'Add Sub Category'
-            });
+            res.json(data);
         };
     } catch (error) {
         res.send(error);
@@ -166,10 +167,10 @@ router.put('/updateSubCategory/:id', async (req, res) => {
     }
 });
 
-router.delete('/deleteCategory/:id', async (req, res) => {
+router.delete('/deleteSubCategory/:id', async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await Category.Category.findOneAndDelete({ _id: id });
+        const data = await Category.SubCategory.findOneAndDelete({ _id: id });
         if (data) {
             res.json({
                 success: true,
