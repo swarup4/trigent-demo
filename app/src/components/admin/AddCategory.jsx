@@ -45,7 +45,7 @@ export default function AddCategory() {
         getSubCategoryData();
     }, []);
 
-    function getCategoryData(){
+    function getCategoryData() {
         axios.get('http://localhost:3001/category/getCategory')
             .then(res => {
                 let data = res.data;
@@ -54,7 +54,7 @@ export default function AddCategory() {
                 console.log(err);
             })
     }
-    function getCategoryById(id){
+    function getCategoryById(id) {
         console.log(id)
         axios.get(`http://localhost:3001/category/getCategoryById/${id}`)
             .then(res => {
@@ -65,7 +65,7 @@ export default function AddCategory() {
             })
     }
 
-    function getSubCategoryData(){
+    function getSubCategoryData() {
         axios.get('http://localhost:3001/category/getSubCategory')
             .then(res => {
                 let data = res.data;
@@ -95,14 +95,14 @@ export default function AddCategory() {
         });
     }
 
-    function deleteCategoryData(id){
+    function deleteCategoryData(id) {
         axios.delete(`http://localhost:3001/category/deleteCategory/${id}`).then(res => {
             getCategoryData();
         }).catch(err => {
             console.log(err);
         });
     }
-    function deleteSubCategoryData(id){
+    function deleteSubCategoryData(id) {
         axios.delete(`http://localhost:3001/category/deleteSubCategory/${id}`).then(res => {
             getSubCategoryData();
         }).catch(err => {
@@ -174,7 +174,7 @@ export default function AddCategory() {
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <OptionLIst list={subCategoryList} deleteFunct={deleteSubCategoryData} />
                             </div>
                         </div>
@@ -193,25 +193,30 @@ export default function AddCategory() {
                         </div>
                         <div>
                             <ul role="list" className="p-6 divide-y divide-slate-200">
-                                {subCategoryList.map((subcate) => {
-                                    {categoryById.map((cate) => (
-                                        <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={subcate._id}>
-                                            <div className="ml-3">
-                                                <p className="text-sm font-medium">
-                                                    {subcate._id == cate ? (
-                                                        <div>
-                                                            <h6>Hello</h6>
-                                                            <input type="checkbox" checked className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
-                                                        </div>
-                                                    ) : (
-                                                        <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
-                                                    )}
-                                                    {subcate.name}
-                                                </p>
-                                            </div>
-                                        </li>
-                                    ))}
-                                })}
+                                {subCategoryList.map((subcate) => (
+                                    <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={subcate._id}>
+                                        <div className="ml-3">
+                                            <p className="text-sm font-medium">
+                                                {categoryById.map((cate) => (
+                                                    <span key={subcate._id}>
+                                                        {(subcate._id == cate) ? (
+                                                            <div>
+                                                                <input type="checkbox" checked className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
+                                                            </div>
+                                                        ) : (
+                                                            // <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
+                                                            <div>
+                                                                {subcate._id} {cate}
+                                                                {/* <input type="checkbox" checked className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" /> */}
+                                                            </div>
+                                                        )}
+                                                    </span>
+                                                ))}
+                                                {subcate.name}
+                                            </p>
+                                        </div>
+                                    </li>
+                                ))}
                             </ul>
                         </div>
                     </div>
