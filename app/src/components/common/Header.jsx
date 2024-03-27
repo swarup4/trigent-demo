@@ -86,8 +86,8 @@ export default function Header() {
                                 </div>
 
                                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                                    {navigation.map((page) => (
-                                        <div key={page.name} className="flow-root">
+                                    {navigation.map((page, ind) => (
+                                        <div key={ind} className="flow-root">
                                             <Link to={page.href} className="-m-2 block p-2 font-medium text-gray-900">
                                                 {page.name}
                                             </Link>

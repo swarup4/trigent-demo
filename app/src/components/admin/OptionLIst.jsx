@@ -5,8 +5,8 @@ export default function OptionLIst(props) {
     return (
         <div className="col-span-full m-none h-96 overflow-auto text-gray-500">
             <ul role="list" className="pt-6 pb-6 divide-y divide-slate-200">
-                {props.list.map((cate) => (
-                    <li key={cate._id} className="flex py-4 first:pt-0 last:pb-0">
+                {props.list.map((cate, ind) => (
+                    <li key={ind} className="flex py-4 first:pt-0 last:pb-0">
                         <div className="ml-3 w-full">
                             <p className="text-sm font-medium w-full float-left text-gray-500">
                                 <span className='float-start'>{cate.name}</span>

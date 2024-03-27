@@ -9,29 +9,14 @@ import axios from 'axios'
 
 import OptionLIst from './OptionLIst'
 
-const initialValues = {
-    fname: '',
-    lname: '',
-    role: '',
-    username: '',
-    email: '',
-    password: ''
-};
-const schema = object({
-    fname: string().required('Enter your First name'),
-    lname: string().required('Enter your Last name'),
-    role: string().required('Select your role'),
-    username: string().required('Enter your username'),
-    email: string().email('Email should be valid').required('Enter your email'),
-    password: string().required('Enter your password')
-});
-
 export default function AddCategory() {
     const [categoryList, setCategoryList] = useState([]);
     const [category, setCategory] = useState('');
     const [categoryById, setCategoryById] = useState([]);
     const [subCategoryList, setSubCategoryList] = useState([]);
     const [subCategory, setSubCategory] = useState('');
+    const [activeItem, setActiveItem] = useState(null);
+    const [selectCategory, setSelectCategory] = useState('');
 
     const handleChange = (event, addFunc) => {
         addFunc(event.target.value);
@@ -54,12 +39,23 @@ export default function AddCategory() {
                 console.log(err);
             })
     }
-    function getCategoryById(id) {
-        console.log(id)
+    function getCategoryById(id, index) {
+        setActiveItem(index);
+        setSelectCategory(id);
+
         axios.get(`http://localhost:3001/category/getCategoryById/${id}`)
             .then(res => {
                 let data = res.data.options;
-                setCategoryById(data);
+                let subCat = subCategoryList.map(x => {
+                    x.select = false;
+                    data.map(y => {
+                        if (x._id == y) {
+                            x.select = true;
+                        }
+                    });
+                    return x;
+                });
+                setCategoryById(subCat);
             }).catch(err => {
                 console.log(err);
             })
@@ -109,6 +105,31 @@ export default function AddCategory() {
             console.log(err);
         });
     }
+
+    function handleCheckboxChange(id, status) {
+        setCategoryById(() => {
+            return categoryById.map(x => {
+                if (x._id == id) {
+                    x.select = !status
+                }
+                return x
+            })
+        })
+    };
+
+    // mapSubCategory/:id
+    function updateCategoryMapping(id){
+        debugger;
+        let body = { options: data }
+        axios.post(`http://localhost:3001/category/mapSubCategory/${id}`, body).then(res => {
+            // setCategoryList([...categoryList, res.data]);
+            // setCategory('');
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+
 
     return (
         <>
@@ -180,9 +201,10 @@ export default function AddCategory() {
                         </div>
 
                         <div>
+                            <div className='h-12'></div>
                             <ul role="list" className="p-6 divide-y divide-slate-200">
-                                {categoryList.map((cate) => (
-                                    <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={cate._id} onClick={() => getCategoryById(cate._id)}>
+                                {categoryList.map((cate, index) => (
+                                    <li className={`flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer ${index === activeItem ? 'active' : ''}`} key={index} onClick={(ev) => getCategoryById(cate._id, index)}>
                                         <div className="ml-3">
                                             <p className="text-sm font-medium">{cate.name}</p>
                                         </div>
@@ -192,26 +214,16 @@ export default function AddCategory() {
 
                         </div>
                         <div>
+                            <div className='h-12'>
+                                <button onClick={() => updateCategoryMapping(selectCategory)} className="rounded-md mt-2 float-right bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
+                            </div>
                             <ul role="list" className="p-6 divide-y divide-slate-200">
-                                {subCategoryList.map((subcate) => (
-                                    <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={subcate._id}>
+                                {categoryById.map((subcate, ind) => (
+                                    <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={ind}>
                                         <div className="ml-3">
                                             <p className="text-sm font-medium">
-                                                {categoryById.map((cate) => (
-                                                    <span key={subcate._id}>
-                                                        {(subcate._id == cate) ? (
-                                                            <div>
-                                                                <input type="checkbox" checked className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
-                                                            </div>
-                                                        ) : (
-                                                            // <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" />
-                                                            <div>
-                                                                {subcate._id} {cate}
-                                                                {/* <input type="checkbox" checked className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" /> */}
-                                                            </div>
-                                                        )}
-                                                    </span>
-                                                ))}
+                                                <input type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 mr-2" id={`checkbox-${subcate._id}`}
+                                                    checked={subcate.select} onChange={() => handleCheckboxChange(subcate._id, subcate.select)} />
                                                 {subcate.name}
                                             </p>
                                         </div>

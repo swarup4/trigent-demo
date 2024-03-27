@@ -86,8 +86,8 @@ export default function Products() {
                                     <form className="mt-4 border-t border-gray-200">
                                         <h3 className="sr-only">Categories</h3>
                                         <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                                            {subCategories.map((category) => (
-                                                <li key={category.name}>
+                                            {subCategories.map((category, ind) => (
+                                                <li key={ind}>
                                                     <a href={category.href} className="block px-2 py-3">
                                                         {category.name}
                                                     </a>
@@ -95,8 +95,8 @@ export default function Products() {
                                             ))}
                                         </ul>
 
-                                        {filter.map((section) => (
-                                            <Disclosure as="div" key={section._id} className="border-t border-gray-200 px-4 py-6">
+                                        {filter.map((section, ind) => (
+                                            <Disclosure as="div" key={ind} className="border-t border-gray-200 px-4 py-6">
                                                 {({ open }) => (
                                                     <>
                                                         <h3 className="-mx-2 -my-3 flow-root">
@@ -114,7 +114,7 @@ export default function Products() {
                                                         <Disclosure.Panel className="pt-6">
                                                             <div className="space-y-6">
                                                                 {section.options.map((option, optionIdx) => (
-                                                                    <div key={option.name} className="flex items-center">
+                                                                    <div key={optionIdx} className="flex items-center">
                                                                         <input
                                                                             id={`filter-mobile-${section._id}-${optionIdx}`}
                                                                             name={`${section._id}[]`}
@@ -179,8 +179,8 @@ export default function Products() {
                                 >
                                     <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none">
                                         <div className="py-1">
-                                            {sortOptions.map((option) => (
-                                                <Menu.Item key={option.name}>
+                                            {sortOptions.map((option, ind) => (
+                                                <Menu.Item key={ind}>
                                                     {({ active }) => (
                                                         <a
                                                             href={option.href}
@@ -220,8 +220,8 @@ export default function Products() {
                             {/* Filters */}
                             <form className="hidden lg:block">
                                 <h3 className="">Categories</h3>
-                                {filter.map((section) => (
-                                    <Disclosure as="div" key={section._id} className="border-b border-gray-200 py-6">
+                                {filter.map((section, ind) => (
+                                    <Disclosure as="div" key={ind} className="border-b border-gray-200 py-6">
                                         {({ open }) => (
                                             <>
                                                 <h3 className="-my-3 flow-root">
@@ -239,7 +239,7 @@ export default function Products() {
                                                 <Disclosure.Panel className="pt-6">
                                                     <div className="space-y-4">
                                                         {section.subCategory.map((option, optionIdx) => (
-                                                            <div key={option.name} className="flex items-center">
+                                                            <div key={optionIdx} className="flex items-center">
                                                                 <input
                                                                     id={`filter-${section._id}-${optionIdx}`}
                                                                     name={`${section._id}[]`}

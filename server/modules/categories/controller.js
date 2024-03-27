@@ -98,20 +98,33 @@ router.put('/updateCategory/:id', async (req, res) => {
     }
 });
 
-router.put('/mapSubCategory/:id', (req, res) => {
-    const id = req.params.id;
-    const body = req.body.subCategory;
-
-    let arr = [];
-    for (const i of body) {
-        const cate = Category.Category.updateOne({ _id: id }, { $push: { options: i } });
-        arr.push(cate);
+router.put('/mapSubCategory/:id', async (req, res) => {
+    try{
+        const id = req.params.id;
+        const body = req.body.subCategory;
+        console.log(body);
+        // const cate = await Category.Category.findOneAndUpdate({ _id: id }, {options: body});
+        // if (cate) {
+        //     res.json({
+        //         success: true,
+        //         data: cate
+        //     });
+        // };
+    } catch (error) {
+        res.send(error);
     }
-    Promise.allSettled(arr).then(data => {
-        res.json(data);
-    }).catch(err => {
-        res.send(err);
-    });
+    
+
+    // let arr = [];
+    // for (const i of body) {
+    //     const cate = Category.Category.updateOne({ _id: id }, { $push: { options: i } });
+    //     arr.push(cate);
+    // }
+    // Promise.allSettled(arr).then(data => {
+    //     res.json(data);
+    // }).catch(err => {
+    //     res.send(err);
+    // });
 });
 
 router.delete('/deleteCategory/:id', async (req, res) => {
