@@ -101,15 +101,14 @@ router.put('/updateCategory/:id', async (req, res) => {
 router.put('/mapSubCategory/:id', async (req, res) => {
     try{
         const id = req.params.id;
-        const body = req.body.subCategory;
-        console.log(body);
-        // const cate = await Category.Category.findOneAndUpdate({ _id: id }, {options: body});
-        // if (cate) {
-        //     res.json({
-        //         success: true,
-        //         data: cate
-        //     });
-        // };
+        const body = req.body;
+        const cate = await Category.Category.findOneAndUpdate({ _id: id }, body);
+        if (cate) {
+            res.json({
+                success: true,
+                data: cate
+            });
+        };
     } catch (error) {
         res.send(error);
     }

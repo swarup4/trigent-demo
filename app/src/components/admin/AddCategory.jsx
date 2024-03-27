@@ -118,12 +118,11 @@ export default function AddCategory() {
     };
 
     // mapSubCategory/:id
-    function updateCategoryMapping(id){
-        debugger;
-        let body = { options: data }
-        axios.post(`http://localhost:3001/category/mapSubCategory/${id}`, body).then(res => {
-            // setCategoryList([...categoryList, res.data]);
-            // setCategory('');
+    function updateCategoryMapping(){
+        let subCatList = categoryById.filter(x => x.select == true).map(x => x._id);
+        let body = { options: subCatList }
+        axios.put(`http://localhost:3001/category/mapSubCategory/${selectCategory}`, body).then(res => {
+            console.log(res.data.data);
         }).catch(err => {
             console.log(err);
         });
@@ -202,7 +201,7 @@ export default function AddCategory() {
 
                         <div>
                             <div className='h-12'></div>
-                            <ul role="list" className="p-6 divide-y divide-slate-200">
+                            <ul role="list" className="py-6 divide-y divide-slate-200">
                                 {categoryList.map((cate, index) => (
                                     <li className={`flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer ${index === activeItem ? 'active' : ''}`} key={index} onClick={(ev) => getCategoryById(cate._id, index)}>
                                         <div className="ml-3">
@@ -215,9 +214,9 @@ export default function AddCategory() {
                         </div>
                         <div>
                             <div className='h-12'>
-                                <button onClick={() => updateCategoryMapping(selectCategory)} className="rounded-md mt-2 float-right bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
+                                <button onClick={() => updateCategoryMapping()} className="rounded-md mt-2 float-right bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Update</button>
                             </div>
-                            <ul role="list" className="p-6 divide-y divide-slate-200">
+                            <ul role="list" className="py-6 divide-y divide-slate-200">
                                 {categoryById.map((subcate, ind) => (
                                     <li className="flex py-2 first:pt-2 last:pb-2 text-gray-500 hover:bg-sky-700 hover:text-white cursor-pointer" key={ind}>
                                         <div className="ml-3">
